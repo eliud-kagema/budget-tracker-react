@@ -34,9 +34,9 @@ const BudgetForm = ({ addTransaction, editTransaction, transactionToEdit }) => {
       };
 
       if (transactionToEdit) {
-        editTransaction(newTransaction); // Edit the existing transaction
+        editTransaction(newTransaction);
       } else {
-        addTransaction(newTransaction); // Add a new transaction
+        addTransaction(newTransaction);
       }
 
       setFormData({ title: '', amount: '', type: 'expense' });
@@ -51,7 +51,7 @@ const BudgetForm = ({ addTransaction, editTransaction, transactionToEdit }) => {
         placeholder="Transaction Title"
         value={formData.title}
         onChange={handleChange}
-        className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+        className="w-full p-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
       />
       <input
         type="number"
@@ -59,20 +59,24 @@ const BudgetForm = ({ addTransaction, editTransaction, transactionToEdit }) => {
         placeholder="Amount"
         value={formData.amount}
         onChange={handleChange}
-        className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+        className="w-full p-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
       />
       <select
         name="type"
         value={formData.type}
         onChange={handleChange}
-        className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+        className="w-full p-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
       >
         <option value="expense">Expense</option>
         <option value="income">Income</option>
       </select>
       <button
         type="submit"
-        className="w-full bg-blue-600 text-white py-3 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        className={`w-full py-3 rounded-md text-white font-bold ${
+          transactionToEdit
+            ? 'bg-yellow-500 hover:bg-yellow-600'
+            : 'bg-blue-600 hover:bg-blue-700'
+        } transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500`}
       >
         {transactionToEdit ? 'Update Transaction' : 'Add Transaction'}
       </button>
