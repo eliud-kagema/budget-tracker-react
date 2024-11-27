@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
-import BudgetForm from './components/BudgetForm';
-import TransactionList from './components/TransactionList';
+import BudgetForm from './components/BudgetForm';  // Corrected path
+import TransactionList from './components/TransactionList';  // Corrected path
+
+// The rest of the code remains the same...
+
 
 const App = () => {
   const [transactions, setTransactions] = useState([]);
