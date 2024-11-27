@@ -1,3 +1,4 @@
+// src/components/TransactionList.js
 import React from 'react';
 import PropTypes from 'prop-types';
 import TransactionItem from './TransactionItem'; // Import the TransactionItem component

@@ -32,7 +32,7 @@ const App = () => {
         transaction.id === updatedTransaction.id ? updatedTransaction : transaction
       )
     );
-    setTransactionToEdit(null);
+    setTransactionToEdit(null);  // Reset the form after editing
   };
 
   // Remove a transaction by its ID
@@ -40,6 +40,7 @@ const App = () => {
     setTransactions((prevTransactions) =>
       prevTransactions.filter((transaction) => transaction.id !== id)
     );
+    setCurrentId((prevId) => prevId - 1);  // Decrease the ID if needed (optional)
   };
 
   // Handle delete click
@@ -67,6 +68,12 @@ const App = () => {
     setModalState({ show: false, type: null, transaction: null });
   };
 
+  // Modal title and message logic
+  const modalTitle = modalState.type === 'delete' ? 'Delete Transaction' : 'Edit Transaction';
+  const modalMessage = modalState.type === 'delete'
+    ? `Are you sure you want to delete "${modalState.transaction?.title}"?`
+    : `Are you sure you want to edit "${modalState.transaction?.title}"?`;
+
   return (
     <div className="min-h-screen bg-gray-50 flex justify-center items-center p-6">
       <div className="max-w-4xl w-full bg-white shadow-lg rounded-lg p-8 space-y-8">
@@ -85,14 +92,8 @@ const App = () => {
       </div>
       {modalState.show && (
         <ConfirmationModal
-          title={
-            modalState.type === 'delete' ? 'Delete Transaction' : 'Edit Transaction'
-          }
-          message={
-            modalState.type === 'delete'
-              ? `Are you sure you want to delete "${modalState.transaction.title}"?`
-              : `Are you sure you want to edit "${modalState.transaction.title}"?`
-          }
+          title={modalTitle}
+          message={modalMessage}
           onConfirm={handleModalConfirm}
           onCancel={handleModalCancel}
         />

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
-const BudgetForm = ({ addTransaction, editTransaction, transactionToEdit, currentId }) => {
+const BudgetForm = ({ addTransaction, editTransaction, transactionToEdit = null, currentId }) => {
   const [formData, setFormData] = useState({
     title: '',
     amount: '',
@@ -90,10 +90,6 @@ BudgetForm.propTypes = {
   editTransaction: PropTypes.func.isRequired,
   transactionToEdit: PropTypes.object,
   currentId: PropTypes.number.isRequired,
-};
-
-BudgetForm.defaultProps = {
-  transactionToEdit: null,
 };
 
 export default BudgetForm;

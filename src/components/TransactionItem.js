@@ -1,3 +1,4 @@
+// src/components/TransactionItem.js
 import React from 'react';
 import PropTypes from 'prop-types';
 import { FaEdit, FaTrash } from 'react-icons/fa';
