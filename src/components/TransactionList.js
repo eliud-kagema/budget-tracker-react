@@ -10,10 +10,11 @@ const TransactionList = ({ transactions }) => {
         Transactions
       </h2>
       <div className="space-y-4">
-        {/* Mapping through the transactions array to display each transaction */}
+        {/* Looping through the transactions array to display each transaction */}
         {transactions.length === 0 ? (
           // If no transactions, show a placeholder message
-          <p className="text-gray-500 text-center">No transactions yet</p>
+        <p className="text-gray-600 text-lg font-semibold text-center bg-gray-100 p-6 rounded-md border border-gray-300 shadow-sm"> No transactions yet</p>
+
         ) : (
           // If transactions exist, display each using the TransactionItem component
           transactions.map((transaction) => (

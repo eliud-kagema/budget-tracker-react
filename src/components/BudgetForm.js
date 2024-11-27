@@ -28,53 +28,43 @@ const BudgetForm = ({ addTransaction }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
-      {/* Title Input */}
-      <div>
-        <input
-          type="text"
-          name="title"
-          placeholder="Transaction Title"
-          value={formData.title}
-          onChange={handleChange}
-          className="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition ease-in-out"
-        />
-      </div>
+    <form onSubmit={handleSubmit} className="space-y-6 max-w-md mx-auto bg-white p-8 rounded-lg shadow-lg">
+      <h2 className="text-2xl font-semibold text-center text-gray-800 mb-4">Add a New Transaction</h2>
       
-      {/* Amount Input */}
-      <div>
-        <input
-          type="number"
-          name="amount"
-          placeholder="Amount"
-          value={formData.amount}
-          onChange={handleChange}
-          className="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition ease-in-out"
-        />
-      </div>
-
-      {/* Transaction Type */}
-      <div>
-        <select
-          name="type"
-          value={formData.type}
-          onChange={handleChange}
-          className="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition ease-in-out"
-        >
-          <option value="expense">Expense</option>
-          <option value="income">Income</option>
-        </select>
-      </div>
-
-      {/* Submit Button */}
-      <div>
-        <button
-          type="submit"
-          className="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition ease-in-out"
-        >
-          Add Transaction
-        </button>
-      </div>
+      <input
+        type="text"
+        name="title"
+        placeholder="Transaction Title"
+        value={formData.title}
+        onChange={handleChange}
+        className="w-full p-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition ease-in-out duration-300"
+      />
+      
+      <input
+        type="number"
+        name="amount"
+        placeholder="Amount"
+        value={formData.amount}
+        onChange={handleChange}
+        className="w-full p-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition ease-in-out duration-300"
+      />
+      
+      <select
+        name="type"
+        value={formData.type}
+        onChange={handleChange}
+        className="w-full p-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition ease-in-out duration-300"
+      >
+        <option value="expense">Expense</option>
+        <option value="income">Income</option>
+      </select>
+      
+      <button
+        type="submit"
+        className="w-full bg-blue-600 text-white py-3 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition ease-in-out duration-300"
+      >
+        Add Transaction
+      </button>
     </form>
   );
 };
