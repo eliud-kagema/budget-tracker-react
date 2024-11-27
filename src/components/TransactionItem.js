@@ -1,27 +1,29 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { FaArrowUp, FaArrowDown } from 'react-icons/fa'; // Adding icons for income and expense
 
-const TransactionItem = ({ transaction }) => {
-  const { title, amount, type } = transaction;
-
+const TransactionItem = ({ transaction, onDelete, onEdit }) => {
   return (
-    <div className="flex justify-between items-center p-4 bg-gray-100 border border-gray-300 rounded-lg shadow-sm hover:shadow-lg transition-all">
+    <div className="p-4 border border-gray-200 rounded-md flex justify-between items-center">
       <div>
-        <p className="font-semibold text-gray-800">{title}</p>
-        <p className="text-sm text-gray-500">{type}</p>
+        <h3 className="text-lg font-semibold">{transaction.title}</h3>
+        <p className="text-sm text-gray-500">{transaction.type}</p>
       </div>
-      <div className="flex items-center">
-        <p className={`font-semibold ${type === 'expense' ? 'text-red-600' : 'text-green-600'}`}>
-          ${amount.toFixed(2)}
-        </p>
-        <div className="ml-3">
-          {type === 'expense' ? (
-            <FaArrowDown className="text-red-600" />
-          ) : (
-            <FaArrowUp className="text-green-600" />
-          )}
-        </div>
+      <div className="flex items-center space-x-4">
+        <span className={`text-xl font-semibold ${transaction.type === 'expense' ? 'text-red-500' : 'text-green-500'}`}>
+          ${transaction.amount.toFixed(2)}
+        </span>
+        <button
+          onClick={onEdit}
+          className="text-blue-600 hover:text-blue-800 focus:outline-none"
+        >
+          Edit
+        </button>
+        <button
+          onClick={onDelete}
+          className="text-red-600 hover:text-red-800 focus:outline-none"
+        >
+          Delete
+        </button>
       </div>
     </div>
   );
@@ -29,6 +31,8 @@ const TransactionItem = ({ transaction }) => {
 
 TransactionItem.propTypes = {
   transaction: PropTypes.object.isRequired,
+  onDelete: PropTypes.func.isRequired,
+  onEdit: PropTypes.func.isRequired,
 };
 
 export default TransactionItem;
