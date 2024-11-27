@@ -1,28 +1,35 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { FaEdit, FaTrash } from 'react-icons/fa';
 
 const TransactionItem = ({ transaction, onDelete, onEdit }) => {
   return (
-    <div className="p-4 border border-gray-200 rounded-md flex justify-between items-center">
+    <div className="p-4 border border-gray-200 rounded-lg flex justify-between items-center shadow-sm hover:shadow-md transition-shadow">
       <div>
-        <h3 className="text-lg font-semibold">{transaction.title}</h3>
-        <p className="text-sm text-gray-500">{transaction.type}</p>
+        <h3 className="text-lg font-semibold text-gray-800">{transaction.title}</h3>
+        <p className="text-sm text-gray-500 capitalize">{transaction.type}</p>
       </div>
       <div className="flex items-center space-x-4">
-        <span className={`text-xl font-semibold ${transaction.type === 'expense' ? 'text-red-500' : 'text-green-500'}`}>
+        <span
+          className={`text-xl font-bold ${
+            transaction.type === 'expense' ? 'text-red-500' : 'text-green-500'
+          }`}
+        >
           ${transaction.amount.toFixed(2)}
         </span>
         <button
           onClick={onEdit}
-          className="text-blue-600 hover:text-blue-800 focus:outline-none"
+          className="p-2 bg-blue-100 hover:bg-blue-200 text-blue-600 rounded-full transition-colors"
+          aria-label="Edit"
         >
-          Edit
+          <FaEdit />
         </button>
         <button
           onClick={onDelete}
-          className="text-red-600 hover:text-red-800 focus:outline-none"
+          className="p-2 bg-red-100 hover:bg-red-200 text-red-600 rounded-full transition-colors"
+          aria-label="Delete"
         >
-          Delete
+          <FaTrash />
         </button>
       </div>
     </div>
