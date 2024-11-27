@@ -48,19 +48,27 @@ const App = () => {
     setModalState({ show: true, type: 'delete', transaction });
   };
 
+
+  // Launch the edit confirmation modal
   const handleEditClick = (transaction) => {
     setModalState({ show: true, type: 'edit', transaction });
   };
 
+  // Handle user confirmation from the modal
   const handleModalConfirm = () => {
     if (modalState.type === 'delete') {
+      // If deleting, remove the transaction
       deleteTransaction(modalState.transaction.id);
     } else if (modalState.type === 'edit') {
+      // If editing, set the transaction to be edited
       setTransactionToEdit(modalState.transaction);
     }
+    // Reset the modal state
     setModalState({ show: false, type: null, transaction: null });
   };
 
+
+  // Handle modal cancellation
   const handleModalCancel = () => {
     setModalState({ show: false, type: null, transaction: null });
   };
