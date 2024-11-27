@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
 const BudgetForm = ({ addTransaction }) => {
-  
+
   // state to hold the form data
   const [formData, setFormData] = useState({
     title: '',
@@ -10,11 +10,15 @@ const BudgetForm = ({ addTransaction }) => {
     type: 'expense',
   });
 
+
+  // Handle changes in the form input fields
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({ ...prevData, [name]: value }));
   };
 
+
+  // Handle form submission
   const handleSubmit = (e) => {
     e.preventDefault();
     if (formData.title && formData.amount) {
