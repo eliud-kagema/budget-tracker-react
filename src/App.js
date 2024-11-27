@@ -1,21 +1,30 @@
 import React, { useState } from 'react';
 import BudgetForm from './components/BudgetForm';
-import TransactionList from './components/TransactionList';
+import { TransactionList } from './components/TransactionList';
 import ConfirmationModal from './components/ConfirmationModal';
 
 const App = () => {
+  // state to manage transaction list
   const [transactions, setTransactions] = useState([]);
+
+  // state to track transaction to edit
   const [transactionToEdit, setTransactionToEdit] = useState(null);
+
+  // tate to manage the confirmation modal's visibility and content
   const [modalState, setModalState] = useState({
-    show: false,
+    show: false, 
     type: null, // "delete" or "edit"
     transaction: null,
   });
 
+
+  // Add a new transaction to the list
   const addTransaction = (newTransaction) => {
     setTransactions((prevTransactions) => [...prevTransactions, newTransaction]);
   };
 
+
+  // Update an existing transaction
   const editTransaction = (updatedTransaction) => {
     setTransactions((prevTransactions) =>
       prevTransactions.map((transaction) =>
@@ -25,12 +34,16 @@ const App = () => {
     setTransactionToEdit(null);
   };
 
+
+  // Remove a transaction by its ID
   const deleteTransaction = (id) => {
     setTransactions((prevTransactions) =>
       prevTransactions.filter((transaction) => transaction.id !== id)
     );
   };
 
+
+  // Launch the delete confirmation modal
   const handleDeleteClick = (transaction) => {
     setModalState({ show: true, type: 'delete', transaction });
   };
