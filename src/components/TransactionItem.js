@@ -3,40 +3,59 @@ import PropTypes from 'prop-types';
 import { FaEdit, FaTrash } from 'react-icons/fa';
 
 const TransactionItem = ({ transaction, onDelete, onEdit }) => {
-  // Handle click events with the relevant transaction data
-  const handleEditClick = () => onEdit(transaction);
-  const handleDeleteClick = () => onDelete(transaction.id);
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return date.toLocaleString('en-GB', {
+      day: 'numeric',
+      month: 'short', // Shortened month (3-letter)
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+    });
+  };
 
   return (
-    <div className="p-4 border border-gray-200 rounded-lg flex justify-between items-center shadow-sm hover:shadow-md transition-shadow">
-      <div>
-        <h3 className="text-lg font-semibold text-gray-800">{transaction.title}</h3>
-        <p className="text-sm text-gray-500 capitalize">{transaction.type}</p>
-      </div>
-      <div className="flex items-center space-x-4">
-        <span
-          className={`text-xl font-bold ${
-            transaction.type === 'expense' ? 'text-red-500' : 'text-green-500'
-          }`}
-        >
-          ${transaction.amount.toFixed(2)}
-        </span>
-        <button
-          onClick={handleEditClick}
-          className="p-2 bg-blue-100 hover:bg-blue-200 text-blue-600 rounded-full transition-colors"
-          aria-label="Edit"
-          title="Edit this transaction"
-        >
-          <FaEdit />
-        </button>
-        <button
-          onClick={handleDeleteClick}
-          className="p-2 bg-red-100 hover:bg-red-200 text-red-600 rounded-full transition-colors"
-          aria-label="Delete"
-          title="Delete this transaction"
-        >
-          <FaTrash />
-        </button>
+    <div className="p-4 border border-gray-200 rounded-lg flex items-center justify-between shadow-sm hover:shadow-md transition-shadow mb-4 w-full">
+      {/* Transaction Data in One Row */}
+      <div className="flex items-center space-x-6 w-full overflow-x-auto">
+        {/* Transaction ID (displayed with a dot) */}
+        <div className="text-sm text-gray-600 font-medium w-1/6 truncate">
+          {transaction.id}.
+        </div>
+
+        {/* Transaction Date (formatted with shortened month and no seconds) */}
+        <div className="text-sm text-gray-500 w-1/4 truncate">
+          {formatDate(transaction.createdAt)}
+        </div>
+
+        {/* Transaction Amount */}
+        <div className="text-xl font-bold w-1/4 text-right">
+          <span
+            className={`${
+              transaction.type === 'expense' ? 'text-red-500' : 'text-green-500'
+            }`}
+          >
+            ${transaction.amount.toFixed(2)}
+          </span>
+        </div>
+
+        {/* Action Buttons (Edit and Delete) */}
+        <div className="flex space-x-4">
+          <button
+            onClick={() => onEdit(transaction)}
+            className="p-2 text-blue-600 hover:text-blue-800"
+            aria-label="Edit"
+          >
+            <FaEdit />
+          </button>
+          <button
+            onClick={() => onDelete(transaction.id)}
+            className="p-2 text-red-600 hover:text-red-800"
+            aria-label="Delete"
+          >
+            <FaTrash />
+          </button>
+        </div>
       </div>
     </div>
   );
