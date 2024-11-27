@@ -1,12 +1,22 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
-const BudgetForm = ({ addTransaction }) => {
+const BudgetForm = ({ addTransaction, editTransaction, transactionToEdit }) => {
   const [formData, setFormData] = useState({
     title: '',
     amount: '',
     type: 'expense',
   });
+
+  useEffect(() => {
+    if (transactionToEdit) {
+      setFormData({
+        title: transactionToEdit.title,
+        amount: transactionToEdit.amount.toString(),
+        type: transactionToEdit.type,
+      });
+    }
+  }, [transactionToEdit]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -17,53 +27,54 @@ const BudgetForm = ({ addTransaction }) => {
     e.preventDefault();
     if (formData.title && formData.amount) {
       const newTransaction = {
-        id: Date.now(),
+        id: transactionToEdit ? transactionToEdit.id : Date.now(),
         title: formData.title,
         amount: parseFloat(formData.amount),
         type: formData.type,
       };
-      addTransaction(newTransaction);
+
+      if (transactionToEdit) {
+        editTransaction(newTransaction); // Edit the existing transaction
+      } else {
+        addTransaction(newTransaction); // Add a new transaction
+      }
+
       setFormData({ title: '', amount: '', type: 'expense' });
     }
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6 max-w-md mx-auto bg-white p-8 rounded-lg shadow-lg">
-      <h2 className="text-2xl font-semibold text-center text-gray-800 mb-4">Add a New Transaction</h2>
-      
+    <form onSubmit={handleSubmit} className="space-y-4 mb-6">
       <input
         type="text"
         name="title"
         placeholder="Transaction Title"
         value={formData.title}
         onChange={handleChange}
-        className="w-full p-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition ease-in-out duration-300"
+        className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
       />
-      
       <input
         type="number"
         name="amount"
         placeholder="Amount"
         value={formData.amount}
         onChange={handleChange}
-        className="w-full p-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition ease-in-out duration-300"
+        className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
       />
-      
       <select
         name="type"
         value={formData.type}
         onChange={handleChange}
-        className="w-full p-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition ease-in-out duration-300"
+        className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
       >
         <option value="expense">Expense</option>
         <option value="income">Income</option>
       </select>
-      
       <button
         type="submit"
-        className="w-full bg-blue-600 text-white py-3 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition ease-in-out duration-300"
+        className="w-full bg-blue-600 text-white py-3 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
       >
-        Add Transaction
+        {transactionToEdit ? 'Update Transaction' : 'Add Transaction'}
       </button>
     </form>
   );
@@ -71,6 +82,12 @@ const BudgetForm = ({ addTransaction }) => {
 
 BudgetForm.propTypes = {
   addTransaction: PropTypes.func.isRequired,
+  editTransaction: PropTypes.func.isRequired,
+  transactionToEdit: PropTypes.object,
+};
+
+BudgetForm.defaultProps = {
+  transactionToEdit: null,
 };
 
 export default BudgetForm;
