@@ -3,6 +3,10 @@ import PropTypes from 'prop-types';
 import { FaEdit, FaTrash } from 'react-icons/fa';
 
 const TransactionItem = ({ transaction, onDelete, onEdit }) => {
+  // Handle click events with the relevant transaction data
+  const handleEditClick = () => onEdit(transaction);
+  const handleDeleteClick = () => onDelete(transaction.id);
+
   return (
     <div className="p-4 border border-gray-200 rounded-lg flex justify-between items-center shadow-sm hover:shadow-md transition-shadow">
       <div>
@@ -18,16 +22,18 @@ const TransactionItem = ({ transaction, onDelete, onEdit }) => {
           ${transaction.amount.toFixed(2)}
         </span>
         <button
-          onClick={onEdit}
+          onClick={handleEditClick}
           className="p-2 bg-blue-100 hover:bg-blue-200 text-blue-600 rounded-full transition-colors"
           aria-label="Edit"
+          title="Edit this transaction"
         >
           <FaEdit />
         </button>
         <button
-          onClick={onDelete}
+          onClick={handleDeleteClick}
           className="p-2 bg-red-100 hover:bg-red-200 text-red-600 rounded-full transition-colors"
           aria-label="Delete"
+          title="Delete this transaction"
         >
           <FaTrash />
         </button>

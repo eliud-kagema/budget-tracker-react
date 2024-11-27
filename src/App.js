@@ -4,25 +4,26 @@ import { TransactionList } from './components/TransactionList';
 import ConfirmationModal from './components/ConfirmationModal';
 
 const App = () => {
-  // state to manage transaction list
   const [transactions, setTransactions] = useState([]);
-
-  // state to track transaction to edit
   const [transactionToEdit, setTransactionToEdit] = useState(null);
-
-  // tate to manage the confirmation modal's visibility and content
   const [modalState, setModalState] = useState({
-    show: false, 
-    type: null, // "delete" or "edit"
+    show: false,
+    type: null,
     transaction: null,
   });
 
+  // State to track the auto-incrementing id
+  const [currentId, setCurrentId] = useState(1);
 
   // Add a new transaction to the list
   const addTransaction = (newTransaction) => {
-    setTransactions((prevTransactions) => [...prevTransactions, newTransaction]);
+    setTransactions((prevTransactions) => [
+      ...prevTransactions,
+      newTransaction,
+    ]);
+    // Increment the id for the next transaction
+    setCurrentId((prevId) => prevId + 1);
   };
-
 
   // Update an existing transaction
   const editTransaction = (updatedTransaction) => {
@@ -34,7 +35,6 @@ const App = () => {
     setTransactionToEdit(null);
   };
 
-
   // Remove a transaction by its ID
   const deleteTransaction = (id) => {
     setTransactions((prevTransactions) =>
@@ -42,31 +42,25 @@ const App = () => {
     );
   };
 
-
-  // Launch the delete confirmation modal
+  // Handle delete click
   const handleDeleteClick = (transaction) => {
     setModalState({ show: true, type: 'delete', transaction });
   };
 
-
-  // Launch the edit confirmation modal
+  // Handle edit click
   const handleEditClick = (transaction) => {
     setModalState({ show: true, type: 'edit', transaction });
   };
 
-  // Handle user confirmation from the modal
+  // Handle modal confirmation
   const handleModalConfirm = () => {
     if (modalState.type === 'delete') {
-      // If deleting, remove the transaction
       deleteTransaction(modalState.transaction.id);
     } else if (modalState.type === 'edit') {
-      // If editing, set the transaction to be edited
       setTransactionToEdit(modalState.transaction);
     }
-    // Reset the modal state
     setModalState({ show: false, type: null, transaction: null });
   };
-
 
   // Handle modal cancellation
   const handleModalCancel = () => {
@@ -81,6 +75,7 @@ const App = () => {
           addTransaction={addTransaction}
           editTransaction={editTransaction}
           transactionToEdit={transactionToEdit}
+          currentId={currentId} // Pass currentId to BudgetForm
         />
         <TransactionList
           transactions={transactions}
@@ -91,9 +86,7 @@ const App = () => {
       {modalState.show && (
         <ConfirmationModal
           title={
-            modalState.type === 'delete'
-              ? 'Delete Transaction'
-              : 'Edit Transaction'
+            modalState.type === 'delete' ? 'Delete Transaction' : 'Edit Transaction'
           }
           message={
             modalState.type === 'delete'

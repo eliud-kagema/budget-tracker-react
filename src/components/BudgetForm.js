@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
-const BudgetForm = ({ addTransaction, editTransaction, transactionToEdit }) => {
+const BudgetForm = ({ addTransaction, editTransaction, transactionToEdit, currentId }) => {
   const [formData, setFormData] = useState({
     title: '',
     amount: '',
@@ -27,10 +27,11 @@ const BudgetForm = ({ addTransaction, editTransaction, transactionToEdit }) => {
     e.preventDefault();
     if (formData.title && formData.amount) {
       const newTransaction = {
-        id: transactionToEdit ? transactionToEdit.id : Date.now(),
+        id: transactionToEdit ? transactionToEdit.id : currentId, // Use the passed currentId
         title: formData.title,
         amount: parseFloat(formData.amount),
         type: formData.type,
+        createdAt: new Date().toISOString(), // Add the current date and time
       };
 
       if (transactionToEdit) {
@@ -88,6 +89,7 @@ BudgetForm.propTypes = {
   addTransaction: PropTypes.func.isRequired,
   editTransaction: PropTypes.func.isRequired,
   transactionToEdit: PropTypes.object,
+  currentId: PropTypes.number.isRequired,
 };
 
 BudgetForm.defaultProps = {
