@@ -2,23 +2,17 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
 const BudgetForm = ({ addTransaction }) => {
-
-  // state to hold the form data
   const [formData, setFormData] = useState({
     title: '',
     amount: '',
     type: 'expense',
   });
 
-
-  // Handle changes in the form input fields
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({ ...prevData, [name]: value }));
   };
 
-
-  // Handle form submission
   const handleSubmit = (e) => {
     e.preventDefault();
     if (formData.title && formData.amount) {
@@ -34,26 +28,53 @@ const BudgetForm = ({ addTransaction }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <input
-        type="text"
-        name="title"
-        placeholder="Transaction Title"
-        value={formData.title}
-        onChange={handleChange}
-      />
-      <input
-        type="number"
-        name="amount"
-        placeholder="Amount"
-        value={formData.amount}
-        onChange={handleChange}
-      />
-      <select name="type" value={formData.type} onChange={handleChange}>
-        <option value="expense">Expense</option>
-        <option value="income">Income</option>
-      </select>
-      <button type="submit">Add Transaction</button>
+    <form onSubmit={handleSubmit} className="space-y-6">
+      {/* Title Input */}
+      <div>
+        <input
+          type="text"
+          name="title"
+          placeholder="Transaction Title"
+          value={formData.title}
+          onChange={handleChange}
+          className="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition ease-in-out"
+        />
+      </div>
+      
+      {/* Amount Input */}
+      <div>
+        <input
+          type="number"
+          name="amount"
+          placeholder="Amount"
+          value={formData.amount}
+          onChange={handleChange}
+          className="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition ease-in-out"
+        />
+      </div>
+
+      {/* Transaction Type */}
+      <div>
+        <select
+          name="type"
+          value={formData.type}
+          onChange={handleChange}
+          className="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition ease-in-out"
+        >
+          <option value="expense">Expense</option>
+          <option value="income">Income</option>
+        </select>
+      </div>
+
+      {/* Submit Button */}
+      <div>
+        <button
+          type="submit"
+          className="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition ease-in-out"
+        >
+          Add Transaction
+        </button>
+      </div>
     </form>
   );
 };

@@ -2,26 +2,21 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import TransactionItem from './TransactionItem';
 
-const TransactionList = ({ transactions, editTransaction }) => {
+const TransactionList = ({ transactions }) => {
   return (
-    <div>
-      <h2>Transactions</h2>
-      <ul>
+    <div className="mt-8">
+      <h2 className="text-2xl font-semibold text-gray-800 mb-4">Transactions</h2>
+      <div className="space-y-4">
         {transactions.map((transaction) => (
-          <TransactionItem
-            key={transaction.id}
-            transaction={transaction}
-            editTransaction={editTransaction}
-          />
+          <TransactionItem key={transaction.id} transaction={transaction} />
         ))}
-      </ul>
+      </div>
     </div>
   );
 };
 
 TransactionList.propTypes = {
   transactions: PropTypes.array.isRequired,
-  editTransaction: PropTypes.func.isRequired,
 };
 
 export default TransactionList;
