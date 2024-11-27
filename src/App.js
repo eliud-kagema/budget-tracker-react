@@ -1,25 +1,29 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
+import BudgetForm from './components/BudgetForm';
+import TransactionList from './components/TransactionList';
 
-function App() {
+const App = () => {
+  const [transactions, setTransactions] = useState([]);
+
+  const addTransaction = (transaction) => {
+    setTransactions((prevTransactions) => [...prevTransactions, transaction]);
+  };
+
+  const editTransaction = (id, updatedTransaction) => {
+    setTransactions((prevTransactions) =>
+      prevTransactions.map((transaction) =>
+        transaction.id === id ? updatedTransaction : transaction
+      )
+    );
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="app">
+      <h1>Budget Tracker</h1>
+      <BudgetForm addTransaction={addTransaction} />
+      <TransactionList transactions={transactions} editTransaction={editTransaction} />
     </div>
   );
-}
+};
 
 export default App;
