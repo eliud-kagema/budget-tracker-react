@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
 const BudgetForm = ({ addTransaction }) => {
+  
+  // state to hold the form data
   const [formData, setFormData] = useState({
     title: '',
     amount: '',
