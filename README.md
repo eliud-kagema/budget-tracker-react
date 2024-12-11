@@ -27,11 +27,6 @@ A dynamic and user-friendly **Budget Tracker** application built with **React** 
 - **Tailwind CSS**: For responsive and modern styling.
 - **React Icons**: For visually appealing icons in the application.
 
----
-
-## Screenshots
-
-![Budget Tracker Screenshot](https://via.placeholder.com/800x400.png?text=Budget+Tracker+App)
 
 ---
 
@@ -52,26 +47,15 @@ Follow these steps to run the project locally:
 
 
 2. **Install dependencies**
+      ```bash
     npm install
 
 
 
 2. **Start the application**
+      ```bash
     npm install
 
 
-## File Structure
 
-src/
-│
-├── components/
-│   ├── BudgetForm.js        # Component for adding and editing transactions
-│   ├── TransactionList.js   # Component for displaying transactions
-│   ├── TransactionItem.js   # Component for individual transaction details
-│   ├── ConfirmationModal.js # Reusable modal component for confirmations
-│
-├── App.js                   # Main application logic
-├── index.js                 # Application entry point
-├── index.css                # Global styles
-│
-├── tailwind.config.js       # Tailwind CSS configuration
+
