@@ -5,7 +5,7 @@ A dynamic and user-friendly **Budget Tracker** application built with **React** 
 ---
 
 ## Live Site
-Check out the live site [here](https://eliud-kagema.github.io/week2-ankan-names/).
+Check out the live site [here](https://eliud-kagema.github.io/budget-tracker-frontend/).
 
 ---
 
