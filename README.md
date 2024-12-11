@@ -58,7 +58,7 @@ Follow these steps to run the project locally:
 
 
 
-2. **Start the application**
+3. **Start the application**
       ```bash
     npm run start
 
