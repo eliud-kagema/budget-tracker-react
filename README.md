@@ -4,6 +4,12 @@ A dynamic and user-friendly **Budget Tracker** application built with **React** 
 
 ---
 
+## Live Site
+Check out the live site [here](https://eliud-kagema.github.io/week2-ankan-names/).
+
+---
+
+
 ## Features
 
 ### 🌟 Core Features
@@ -54,8 +60,14 @@ Follow these steps to run the project locally:
 
 2. **Start the application**
       ```bash
-    npm install
+    npm run start
 
 
 
 
+## License
+This project is licensed under the MIT License.
+
+
+## Copyright
+© 2024 Eliud Kagema. All Rights Reserved.
