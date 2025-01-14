@@ -1,39 +1,46 @@
 import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { login } from "../redux/actions/authActions";
+import { useDispatch } from "react-redux";
+import { loginAction } from "../redux/actions/authActions";
+import { useNavigate } from "react-router-dom"; // Use useNavigate instead of useHistory
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
   const dispatch = useDispatch();
-  const error = useSelector((state) => state.auth.error);
+  const navigate = useNavigate(); // Use useNavigate instead of useHistory
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    dispatch(login(email, password));
+    try {
+      await dispatch(loginAction(email, password));
+      navigate("/budget-form"); // Use navigate instead of history.push
+    } catch (error) {
+      setError(error.message);
+    }
   };
 
   return (
     <div>
-      <h1>Login</h1>
+      <h2>Login</h2>
+      {error && <p>{error}</p>}
       <form onSubmit={handleSubmit}>
         <input
           type="email"
-          placeholder="Email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
+          placeholder="Email"
           required
         />
         <input
           type="password"
-          placeholder="Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
+          placeholder="Password"
           required
         />
         <button type="submit">Login</button>
       </form>
-      {error && <p style={{ color: "red" }}>{error}</p>}
     </div>
   );
 };

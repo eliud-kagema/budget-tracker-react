@@ -1,12 +1,11 @@
 import { auth, db } from "../firebase/config";
 
-// Register user function
+// Register function
 export const register = async (email, password, username) => {
   try {
     const userCredential = await auth.createUserWithEmailAndPassword(email, password);
     const user = userCredential.user;
 
-    // Store additional user data in Firestore
     await db.collection("users").doc(user.uid).set({
       username: username,
       email: email,
@@ -14,6 +13,18 @@ export const register = async (email, password, username) => {
 
     return user;
   } catch (error) {
-    throw new Error(error.message);
+    console.error("Registration error:", error);
+    throw new Error("Registration failed. Please try again.");
+  }
+};
+
+// Login function
+export const login = async (email, password) => {
+  try {
+    const userCredential = await auth.signInWithEmailAndPassword(email, password);
+    return userCredential.user;
+  } catch (error) {
+    console.error("Login error:", error);
+    throw new Error("Login failed. Check your credentials and try again.");
   }
 };

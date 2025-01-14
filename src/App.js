@@ -1,104 +1,42 @@
-import React, { useState } from 'react';
-import BudgetForm from './components/BudgetForm';
-import { TransactionList } from './components/TransactionList';
-import ConfirmationModal from './components/ConfirmationModal';
+import React, { useState, useEffect } from "react";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import LoginPage from "./pages/LoginPage";
+import RegisterPage from "./pages/RegisterPage";
+import BudgetForm from "./components/BudgetForm"; // Assuming BudgetForm is in components
 
 const App = () => {
-  const [transactions, setTransactions] = useState([]);
-  const [transactionToEdit, setTransactionToEdit] = useState(null);
-  const [modalState, setModalState] = useState({
-    show: false,
-    type: null,
-    transaction: null,
-  });
+  const user = useSelector((state) => state.auth.user);
+  const [isLoading, setIsLoading] = useState(true);
 
-  // State to track the auto-incrementing id
-  const [currentId, setCurrentId] = useState(1);
-
-  // Add a new transaction to the list
-  const addTransaction = (newTransaction) => {
-    setTransactions((prevTransactions) => [
-      ...prevTransactions,
-      newTransaction,
-    ]);
-    // Increment the id for the next transaction
-    setCurrentId((prevId) => prevId + 1);
-  };
-
-  // Update an existing transaction
-  const editTransaction = (updatedTransaction) => {
-    setTransactions((prevTransactions) =>
-      prevTransactions.map((transaction) =>
-        transaction.id === updatedTransaction.id ? updatedTransaction : transaction
-      )
-    );
-    setTransactionToEdit(null);  // Reset the form after editing
-  };
-
-  // Remove a transaction by its ID
-  const deleteTransaction = (id) => {
-    setTransactions((prevTransactions) =>
-      prevTransactions.filter((transaction) => transaction.id !== id)
-    );
-    setCurrentId((prevId) => prevId - 1);  // Decrease the ID if needed (optional)
-  };
-
-  // Handle delete click
-  const handleDeleteClick = (transaction) => {
-    setModalState({ show: true, type: 'delete', transaction });
-  };
-
-  // Handle edit click
-  const handleEditClick = (transaction) => {
-    setModalState({ show: true, type: 'edit', transaction });
-  };
-
-  // Handle modal confirmation
-  const handleModalConfirm = () => {
-    if (modalState.type === 'delete') {
-      deleteTransaction(modalState.transaction.id);
-    } else if (modalState.type === 'edit') {
-      setTransactionToEdit(modalState.transaction);
+  useEffect(() => {
+    if (user !== null || user === null) {
+      setIsLoading(false);
     }
-    setModalState({ show: false, type: null, transaction: null });
-  };
+  }, [user]);
 
-  // Handle modal cancellation
-  const handleModalCancel = () => {
-    setModalState({ show: false, type: null, transaction: null });
-  };
-
-  // Modal title and message logic
-  const modalTitle = modalState.type === 'delete' ? 'Delete Transaction' : 'Edit Transaction';
-  const modalMessage = modalState.type === 'delete'
-    ? `Are you sure you want to delete "${modalState.transaction?.title}"?`
-    : `Are you sure you want to edit "${modalState.transaction?.title}"?`;
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
   return (
-    <div className="min-h-screen bg-gray-50 flex justify-center items-center p-6">
-      <div className="max-w-4xl w-full bg-white shadow-lg rounded-lg p-8 space-y-8">
-        <h1 className="text-4xl font-bold text-center text-blue-700">Budget Tracker</h1>
-        <BudgetForm
-          addTransaction={addTransaction}
-          editTransaction={editTransaction}
-          transactionToEdit={transactionToEdit}
-          currentId={currentId} // Pass currentId to BudgetForm
+    <Router>
+      <Routes>
+        <Route
+          path="/login"
+          element={user ? <Navigate to="/budget-form" /> : <LoginPage />}
         />
-        <TransactionList
-          transactions={transactions}
-          onDelete={handleDeleteClick}
-          onEdit={handleEditClick}
+        <Route
+          path="/register"
+          element={user ? <Navigate to="/budget-form" /> : <RegisterPage />}
         />
-      </div>
-      {modalState.show && (
-        <ConfirmationModal
-          title={modalTitle}
-          message={modalMessage}
-          onConfirm={handleModalConfirm}
-          onCancel={handleModalCancel}
+        <Route
+          path="/budget-form"
+          element={user ? <BudgetForm /> : <Navigate to="/login" />}
         />
-      )}
-    </div>
+        <Route path="/" element={<Navigate to="/login" />} />
+      </Routes>
+    </Router>
   );
 };
 
