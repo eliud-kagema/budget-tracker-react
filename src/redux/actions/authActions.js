@@ -1,29 +1,27 @@
-import { auth } from "../../firebase/config";
-import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut } from "firebase/auth";
+import { login, register } from "../../api/authApi";
 
-export const login = (email, password) => async (dispatch) => {
+// Action Types
+export const LOGIN_SUCCESS = "LOGIN_SUCCESS";
+export const LOGIN_FAILURE = "LOGIN_FAILURE";
+export const REGISTER_SUCCESS = "REGISTER_SUCCESS";
+export const REGISTER_FAILURE = "REGISTER_FAILURE";
+
+// Login Action
+export const loginAction = (email, password) => async (dispatch) => {
   try {
-    const userCredential = await signInWithEmailAndPassword(auth, email, password);
-    dispatch({ type: "LOGIN_SUCCESS", payload: userCredential.user });
+    const user = await login(email, password);
+    dispatch({ type: LOGIN_SUCCESS, payload: user });
   } catch (error) {
-    dispatch({ type: "LOGIN_ERROR", payload: error.message });
+    dispatch({ type: LOGIN_FAILURE, payload: error.message });
   }
 };
 
-export const register = (email, password) => async (dispatch) => {
+// Register Action
+export const registerAction = (email, password, username) => async (dispatch) => {
   try {
-    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-    dispatch({ type: "REGISTER_SUCCESS", payload: userCredential.user });
+    const user = await register(email, password, username);
+    dispatch({ type: REGISTER_SUCCESS, payload: user });
   } catch (error) {
-    dispatch({ type: "REGISTER_ERROR", payload: error.message });
-  }
-};
-
-export const logout = () => async (dispatch) => {
-  try {
-    await signOut(auth);
-    dispatch({ type: "LOGOUT_SUCCESS" });
-  } catch (error) {
-    dispatch({ type: "LOGOUT_ERROR", payload: error.message });
+    dispatch({ type: REGISTER_FAILURE, payload: error.message });
   }
 };
