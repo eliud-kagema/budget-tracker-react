@@ -3,8 +3,8 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-d
 import { useSelector } from "react-redux";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
-import BudgetForm from "./components/BudgetForm";
-import HomePage from "./pages/HomePage"; // Import HomePage
+import BudgetPage from "./pages/BudgetPage"; // Changed import here
+import HomePage from "./pages/HomePage";
 
 const App = () => {
   const user = useSelector((state) => state.auth.user);
@@ -14,17 +14,6 @@ const App = () => {
     setIsLoading(false);
   }, [user]);
 
-  // Handlers for BudgetForm (replace these with actual implementations)
-  const addTransaction = (transaction) => {
-    console.log("Add transaction:", transaction);
-  };
-
-  const editTransaction = (id, updatedTransaction) => {
-    console.log("Edit transaction:", id, updatedTransaction);
-  };
-
-  const currentId = null; // Replace with logic to get the current transaction ID if applicable
-
   if (isLoading) {
     return <div>Loading...</div>;
   }
@@ -32,32 +21,37 @@ const App = () => {
   return (
     <Router>
       <Routes>
+        {/* Login Route */}
         <Route
           path="/login"
           element={user ? <Navigate to="/home-page" /> : <LoginPage />}
         />
+        
+        {/* Register Route */}
         <Route
           path="/register"
           element={user ? <Navigate to="/home-page" /> : <RegisterPage />}
         />
+        
+        {/* Budget Page Route */}
         <Route
-          path="/budget-form"
+          path="/budget"
           element={
             user ? (
-              <BudgetForm
-                addTransaction={addTransaction}
-                editTransaction={editTransaction}
-                currentId={currentId}
-              />
+              <BudgetPage /> // Render BudgetPage component here
             ) : (
               <Navigate to="/login" />
             )
           }
         />
+        
+        {/* Home Page Route */}
         <Route
           path="/home-page"
           element={user ? <HomePage /> : <Navigate to="/login" />}
         />
+        
+        {/* Default Route */}
         <Route path="/" element={<Navigate to="/login" />} />
       </Routes>
     </Router>

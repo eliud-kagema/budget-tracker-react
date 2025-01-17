@@ -1,95 +1,108 @@
 import React, { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
 
-const BudgetForm = ({ addTransaction, editTransaction, transactionToEdit = null, currentId }) => {
-  const [formData, setFormData] = useState({
-    title: '',
-    amount: '',
-    type: 'expense',
-  });
+const BudgetForm = ({ addTransaction, editTransaction, transactionToEdit, currentId }) => {
+  const [title, setTitle] = useState('');
+  const [amount, setAmount] = useState(0);
+  const [type, setType] = useState('expense');
+  const [category, setCategory] = useState('');
+  const [recurring, setRecurring] = useState(false);
 
   useEffect(() => {
     if (transactionToEdit) {
-      setFormData({
-        title: transactionToEdit.title,
-        amount: transactionToEdit.amount.toString(),
-        type: transactionToEdit.type,
-      });
+      setTitle(transactionToEdit.title);
+      setAmount(transactionToEdit.amount);
+      setType(transactionToEdit.type);
+      setCategory(transactionToEdit.category);
+      setRecurring(transactionToEdit.recurring);
     }
   }, [transactionToEdit]);
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prevData) => ({ ...prevData, [name]: value }));
-  };
-
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (formData.title && formData.amount) {
-      const newTransaction = {
-        id: transactionToEdit ? transactionToEdit.id : currentId, // Use the passed currentId
-        title: formData.title,
-        amount: parseFloat(formData.amount),
-        type: formData.type,
-        createdAt: new Date().toISOString(), // Add the current date and time
-      };
+    const transaction = {
+      id: transactionToEdit ? transactionToEdit.id : currentId,
+      title,
+      amount,
+      type,
+      category,
+      recurring,
+      createdAt: new Date().toISOString(),
+    };
 
-      if (transactionToEdit) {
-        editTransaction(newTransaction);
-      } else {
-        addTransaction(newTransaction);
-      }
-
-      setFormData({ title: '', amount: '', type: 'expense' });
+    if (transactionToEdit) {
+      editTransaction(transaction);
+    } else {
+      addTransaction(transaction);
     }
+
+    setTitle('');
+    setAmount(0);
+    setCategory('');
+    setRecurring(false);
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4 mb-6">
-      <input
-        type="text"
-        name="title"
-        placeholder="Transaction Title"
-        value={formData.title}
-        onChange={handleChange}
-        className="w-full p-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-      />
-      <input
-        type="number"
-        name="amount"
-        placeholder="Amount"
-        value={formData.amount}
-        onChange={handleChange}
-        className="w-full p-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-      />
-      <select
-        name="type"
-        value={formData.type}
-        onChange={handleChange}
-        className="w-full p-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-      >
-        <option value="expense">Expense</option>
-        <option value="income">Income</option>
-      </select>
-      <button
-        type="submit"
-        className={`w-full py-3 rounded-md text-white font-bold ${
-          transactionToEdit
-            ? 'bg-yellow-500 hover:bg-yellow-600'
-            : 'bg-blue-600 hover:bg-blue-700'
-        } transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500`}
-      >
-        {transactionToEdit ? 'Update Transaction' : 'Add Transaction'}
+    <form onSubmit={handleSubmit} className="bg-white p-6 rounded-md shadow-md">
+      <h3 className="text-2xl font-semibold text-gray-700 mb-4">{transactionToEdit ? 'Edit' : 'Add'} Transaction</h3>
+
+      <div className="mb-4">
+        <input
+          type="text"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+          className="p-2 border rounded-md w-full"
+          placeholder="Transaction Title"
+        />
+      </div>
+
+      <div className="mb-4">
+        <input
+          type="number"
+          value={amount}
+          onChange={(e) => setAmount(Number(e.target.value))}
+          className="p-2 border rounded-md w-full"
+          placeholder="Amount"
+        />
+      </div>
+
+      <div className="mb-4">
+        <select
+          value={type}
+          onChange={(e) => setType(e.target.value)}
+          className="p-2 border rounded-md w-full"
+        >
+          <option value="expense">Expense</option>
+          <option value="income">Income</option>
+        </select>
+      </div>
+
+      <div className="mb-4">
+        <input
+          type="text"
+          value={category}
+          onChange={(e) => setCategory(e.target.value)}
+          className="p-2 border rounded-md w-full"
+          placeholder="Category (e.g., Food, Rent)"
+        />
+      </div>
+
+      <div className="mb-4">
+        <label className="flex items-center">
+          <input
+            type="checkbox"
+            checked={recurring}
+            onChange={() => setRecurring(!recurring)}
+            className="mr-2"
+          />
+          Recurring
+        </label>
+      </div>
+
+      <button type="submit" className="bg-blue-600 text-white py-2 px-6 rounded-md">
+        {transactionToEdit ? 'Save Changes' : 'Add Transaction'}
       </button>
     </form>
   );
-};
-
-BudgetForm.propTypes = {
-  addTransaction: PropTypes.func.isRequired,
-  editTransaction: PropTypes.func.isRequired,
-  transactionToEdit: PropTypes.object,
-  currentId: PropTypes.number.isRequired,
 };
 
 export default BudgetForm;

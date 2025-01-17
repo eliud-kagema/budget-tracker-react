@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { FaPiggyBank, FaMoneyBillWave, FaCalendarAlt, FaTrash, FaEdit } from 'react-icons/fa';
+import Header from '../components/shared/Header';
+import Sidebar from '../components/shared/Sidebar';
+import Footer from '../components/shared/Footer';
 import BudgetForm from '../components/BudgetForm';
 import TransactionList from '../components/TransactionList';
+import BudgetSummary from '../components/BudgetSummary';
 import 'animate.css';
 
 const BudgetPage = () => {
@@ -16,6 +19,19 @@ const BudgetPage = () => {
   });
 
   const [transactionToEdit, setTransactionToEdit] = useState(null);
+
+  const [currentId, setCurrentId] = useState(() => {
+    const savedId = localStorage.getItem('currentId');
+    return savedId ? parseInt(savedId) : transactions.length + 1;
+  });
+
+  useEffect(() => {
+    localStorage.setItem('budget', JSON.stringify(budget));
+  }, [budget]);
+
+  useEffect(() => {
+    localStorage.setItem('currentId', currentId);
+  }, [currentId]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -32,6 +48,7 @@ const BudgetPage = () => {
     const updatedTransactions = [...transactions, transaction];
     setTransactions(updatedTransactions);
     localStorage.setItem('transactions', JSON.stringify(updatedTransactions));
+    setCurrentId(currentId + 1); // Increment the ID counter
   };
 
   const editTransaction = (updatedTransaction) => {
@@ -49,50 +66,34 @@ const BudgetPage = () => {
     localStorage.setItem('transactions', JSON.stringify(updatedTransactions));
   };
 
-  useEffect(() => {
-    localStorage.setItem('budget', JSON.stringify(budget));
-  }, [budget]);
-
   return (
-    <div className="p-8">
-      <header className="text-center mb-12 animate__animated animate__fadeIn">
-        <h1 className="text-4xl font-bold text-gray-800">Budget Planner</h1>
-        <p className="text-lg text-gray-600 mt-3">Track your spending and achieve your goals.</p>
-      </header>
+    <div className="flex">
+      <Sidebar />
+      <div className="flex-1 p-8 bg-gradient-to-r from-blue-500 to-teal-500 min-h-screen">
+        <Header />
+        <header className="text-center mb-12 animate__animated animate__fadeIn">
+          <h1 className="text-5xl font-bold text-white">Budget Planning</h1>
+          <p className="text-lg text-white mt-3">Manage your budget and track your expenses!</p>
+        </header>
 
-      <div className="bg-white p-6 rounded-lg shadow-md max-w-4xl mx-auto animate__animated animate__fadeInUp">
-        <form onSubmit={handleSaveBudget}>
-          {/* Budget form fields */}
-          {/* ...same as current implementation... */}
-          <div className="text-center mt-8">
-            <button
-              type="submit"
-              className="bg-blue-600 text-white py-3 px-8 rounded-md shadow-lg hover:bg-blue-700 transition duration-300"
-            >
-              Save Budget
-            </button>
-          </div>
-        </form>
-      </div>
+        <div className="container mx-auto p-8">
+          <BudgetForm
+            addTransaction={addTransaction}
+            editTransaction={editTransaction}
+            transactionToEdit={transactionToEdit}
+            currentId={currentId}
+          />
+        </div>
 
-      {/* Add Transaction Form */}
-      <BudgetForm
-        addTransaction={addTransaction}
-        editTransaction={editTransaction}
-        transactionToEdit={transactionToEdit}
-        currentId={transactions.length + 1}
-      />
+        <TransactionList
+          transactions={transactions}
+          deleteTransaction={deleteTransaction}
+          setTransactionToEdit={setTransactionToEdit}
+        />
 
-      {/* Transaction List */}
-      <TransactionList
-        transactions={transactions}
-        deleteTransaction={deleteTransaction}
-        setTransactionToEdit={setTransactionToEdit}
-      />
+        <BudgetSummary budget={budget} transactions={transactions} />
 
-      {/* Budget Summary */}
-      <div className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-8">
-        {/* ...same summary cards... */}
+        <Footer />
       </div>
     </div>
   );
