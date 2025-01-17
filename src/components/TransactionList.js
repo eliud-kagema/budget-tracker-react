@@ -1,34 +1,44 @@
-// src/components/TransactionList.js
 import React from 'react';
 import PropTypes from 'prop-types';
-import TransactionItem from './TransactionItem'; // Import the TransactionItem component
+import { FaTrash, FaEdit } from 'react-icons/fa';
 
-export const TransactionList = ({ transactions, onDelete, onEdit }) => {
-  return (
-    <div className="mt-8">
-      <h2 className="text-3xl font-semibold text-gray-800 mb-6 border-b-2 border-gray-300 pb-2">
-        Transactions
-      </h2>
-      <div className="space-y-4">
-        {transactions.length === 0 ? (
-          <p className="text-center text-gray-500 italic">No transactions available. Start by adding a new one!</p>
-        ) : (
-          transactions.map((transaction) => (
-            <TransactionItem
-              key={transaction.id}
-              transaction={transaction}
-              onDelete={onDelete}
-              onEdit={onEdit}
-            />
-          ))
-        )}
-      </div>
-    </div>
-  );
-};
+const TransactionList = ({ transactions, deleteTransaction, setTransactionToEdit }) => (
+  <div className="mt-8">
+    <h2 className="text-xl font-bold text-gray-700">Transactions</h2>
+    <ul className="mt-4 space-y-4">
+      {transactions.map((transaction) => (
+        <li
+          key={transaction.id}
+          className={`flex justify-between p-4 rounded-lg shadow-md ${
+            transaction.type === 'income' ? 'bg-green-100' : 'bg-red-100'
+          }`}
+        >
+          <span className="font-bold">{transaction.title}</span>
+          <span>${transaction.amount.toFixed(2)}</span>
+          <div className="flex space-x-2">
+            <button
+              onClick={() => setTransactionToEdit(transaction)}
+              className="text-blue-600 hover:text-blue-800"
+            >
+              <FaEdit />
+            </button>
+            <button
+              onClick={() => deleteTransaction(transaction.id)}
+              className="text-red-600 hover:text-red-800"
+            >
+              <FaTrash />
+            </button>
+          </div>
+        </li>
+      ))}
+    </ul>
+  </div>
+);
 
 TransactionList.propTypes = {
   transactions: PropTypes.array.isRequired,
-  onDelete: PropTypes.func.isRequired,
-  onEdit: PropTypes.func.isRequired,
+  deleteTransaction: PropTypes.func.isRequired,
+  setTransactionToEdit: PropTypes.func.isRequired,
 };
+
+export default TransactionList;
