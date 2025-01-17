@@ -2,16 +2,15 @@ import { initializeApp } from "firebase/app";
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 
-// Your Firebase config
 const firebaseConfig = {
-    apiKey: "AIzaSyCoC2u7OblyBnvRzXpZWyxZR3XzRPYIAP8",
-    authDomain: "react-firebase-app-ef528.firebaseapp.com",
-    projectId: "react-firebase-app-ef528",
-    storageBucket: "react-firebase-app-ef528.firebasestorage.app",
-    messagingSenderId: "279247610656",
-    appId: "1:279247610656:web:2cce99938f9c382813ad45",
-    measurementId: "G-S6ENL8R4WT"
-  };
+  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
+  authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.REACT_APP_FIREBASE_APP_ID,
+  measurementId: process.env.REACT_APP_FIREBASE_MEASUREMENT_ID,
+};
 
 // Initialize Firebase app
 const app = initializeApp(firebaseConfig);
@@ -24,4 +23,3 @@ const db = getFirestore(app);
 
 // Export functions for authentication and Firestore
 export { auth, db, createUserWithEmailAndPassword, signInWithEmailAndPassword };
-
