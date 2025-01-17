@@ -4,16 +4,12 @@ A dynamic and user-friendly **Budget Tracker** application built with **React** 
 
 ---
 
-## Live Site
-Check out the live site [here](https://eliud-kagema.github.io/budget-tracker-frontend/).
-
----
 
 
 ## Features
 
 ### 🌟 Core Features
-- **Add Transactions**: Easily add income or expense transactions with details like title, amount, and type.
+- **Add Transactions**: Easily add income or expense transactions with details like title, amount, category and type.
 - **Edit Transactions**: Update existing transaction details with confirmation prompts.
 - **Delete Transactions**: Remove unwanted transactions securely after confirmation.
 - **Real-time Updates**: Transactions are dynamically displayed without refreshing the page.
@@ -32,6 +28,8 @@ Check out the live site [here](https://eliud-kagema.github.io/budget-tracker-fro
 - **React**: For building the user interface and managing state.
 - **Tailwind CSS**: For responsive and modern styling.
 - **React Icons**: For visually appealing icons in the application.
+- **Redux**: For centralized state management, allowing efficient sharing of data across components, with actions and reducers handling financial data such as income and expenses.
+- **Firestore**:: For user login and registration
 
 
 ---
@@ -56,9 +54,17 @@ Follow these steps to run the project locally:
       ```bash
     npm install
 
+3. **Update the .env file with**
+      ```bash
+      REACT_APP_FIREBASE_API_KEY=
+      REACT_APP_FIREBASE_AUTH_DOMAIN=
+      REACT_APP_FIREBASE_PROJECT_ID=
+      REACT_APP_FIREBASE_STORAGE_BUCKET=
+      REACT_APP_FIREBASE_MESSAGING_SENDER_ID=
+      REACT_APP_FIREBASE_APP_ID=
+      REACT_APP_FIREBASE_MEASUREMENT_ID=
 
-
-3. **Start the application**
+4. **Start the application**
       ```bash
     npm run start
 
